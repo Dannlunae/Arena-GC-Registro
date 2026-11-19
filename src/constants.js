@@ -2,6 +2,10 @@
 // Usa ids en minúsculas, sin guiones bajos ni espacios.
 export const LOCALES = [{ id: "principal", nombre: "Cyber" }];
 
+// Fotos y PDF de clientes. Déjalo en false hasta activar Storage (requiere plan Blaze y las reglas de storage.rules);
+// luego cámbialo a true y vuelve a publicar.
+export const FOTOS_ACTIVAS = true;
+
 export const ROLE_INFO = {
   admin: { label: "Administrador", color: "#FFD700" },
   recepcion: { label: "Recepción", color: "#3498db" },
