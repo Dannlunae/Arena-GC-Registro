@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Reglas completas para un proyecto de Firebase PROPIO del cyber (todo lo demás queda bloqueado).
+    // Si algún día las mezclas con otro sistema, copia solo el bloque «match /{col}/{docId}».
+    // Colecciones (localId sin guiones bajos, ej. «principal»):
+    //   cyber_principal                  → documentos staff, clientes, categorias
+    //   cyber_principal_ingresos         → un documento por ingreso
+    //   cyber_principal_ingresos_dias    → resumen por día
+
+    match /{col}/{docId} {
+      // Personal, clientes y categorías
+      allow read, write: if request.auth != null && col.matches('cyber_[a-z0-9]+');
+
+      // Resumen por día (contadores)
+      allow read, write: if request.auth != null && col.matches('cyber_[a-z0-9]+_ingresos_dias');
+
+      // Ingresos: se crean y se leen; solo se puede editar el comentario; nunca se borran
+      allow read: if request.auth != null && col.matches('cyber_[a-z0-9]+_ingresos');
+      allow create: if request.auth != null && col.matches('cyber_[a-z0-9]+_ingresos')
+        && request.resource.data.keys().hasOnly(['clienteId','dni','nombres','apodo','comentario','ts','dia','n','usuario','userId'])
+        && request.resource.data.ts == request.time            // la hora la pone el servidor
+        && request.resource.data.comentario.size() <= 500;
+      allow update: if request.auth != null && col.matches('cyber_[a-z0-9]+_ingresos')
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['comentario'])
+        && request.resource.data.comentario.size() <= 500;
+      allow delete: if false;
+    }
+  }
+}

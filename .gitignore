@@ -1,0 +1,26 @@
+# Dependencias y compilación
+/node_modules
+/build
+
+# Variables de entorno (claves y configuración): NUNCA se suben
+.env
+.env.*
+!.env.example
+
+# Vercel y Firebase locales
+.vercel
+.firebase/
+firebase-debug.log*
+
+# Registros y archivos del sistema
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Android Studio (si compilas la app)
+android/**/build/
+android/.gradle/
+android/local.properties
+*.apk
+*.aab
