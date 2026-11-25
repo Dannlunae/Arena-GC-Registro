@@ -2,7 +2,7 @@ import { useState, useMemo, useRef } from "react";
 import { Avatar } from "../common/Common";
 import { norm, porNombre, limaStamp } from "../../services/normalizers";
 
-export default function IngresarPanel({ data, user, s, Y, showToast, onNuevo, onVer }) {
+export default function IngresarPanel({ data, user, s, showToast, onNuevo, onVer }) {
   const { clientes, categorias, resumenHoy, fs, loaded } = data;
   const [q, setQ] = useState("");
   const [cm, setCm] = useState("");
@@ -20,7 +20,7 @@ export default function IngresarPanel({ data, user, s, Y, showToast, onNuevo, on
     setBusy(true);
     try {
       const r = await fs.registrarIngreso(c, cm, user);
-      showToast(`✔ ${c.nombres} · ${limaStamp(Date.now()).slice(11)}${r.n > 1 ? ` (ingreso n.º ${r.n} hoy)` : ""}`);
+      showToast(`${c.nombres} registrado · ${limaStamp(Date.now()).slice(11)}${r.n > 1 ? ` (ingreso n.º ${r.n} hoy)` : ""}`);
       setQ(""); setCm(""); ref.current && ref.current.focus();
     } catch (e) { showToast(e.message || "No se pudo registrar", true); }
     finally { setBusy(false); }
@@ -39,11 +39,11 @@ export default function IngresarPanel({ data, user, s, Y, showToast, onNuevo, on
         {lista.map((c) => {
           const hoy = resumenHoy && resumenHoy.porCliente ? resumenHoy.porCliente[c.id] : 0;
           return (
-            <div key={c.id} style={{ ...s.row, flexWrap: "nowrap", padding: "8px 0", borderBottom: "1px solid #2a2a2a" }}>
-              <Avatar c={c} Y={Y} onClick={() => onVer(c)} />
+            <div key={c.id} style={{ ...s.row, flexWrap: "nowrap", padding: "8px 0", borderBottom: "1px solid #e5e7eb" }}>
+              <Avatar c={c} onClick={() => onVer(c)} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontWeight: 800 }}>{c.nombres} {c.apellidos} {c.apodo && <span style={s.muted}>«{c.apodo}»</span>}</div>
-                <div style={s.muted}>{c.dni ? `DNI ${c.dni}` : "sin DNI"} {catName(c.categoriaId) && <span style={s.tag("#2a2a2a", "#aaa")}>{catName(c.categoriaId)}</span>} {hoy > 0 && <span style={s.tag("#4a3b00", Y)}>hoy: {hoy}</span>}</div>
+                <div style={s.muted}>{c.dni ? `DNI ${c.dni}` : "sin DNI"} {catName(c.categoriaId) && <span style={s.tag("#f3f4f6", "#6b7280")}>{catName(c.categoriaId)}</span>} {hoy > 0 && <span style={s.tag("#111827", "#ffffff")}>hoy: {hoy}</span>}</div>
               </div>
               <button style={s.btn()} disabled={busy} onClick={() => registrar(c)}>Registrar</button>
             </div>

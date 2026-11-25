@@ -31,7 +31,7 @@ export default function CategoriasManager({ data, user, s, showToast }) {
       </div>
       <div style={s.card}>
         {categorias.slice().sort((a, b) => a.nombre.localeCompare(b.nombre, "es")).map((k) => (
-          <div key={k.id} style={{ ...s.row, padding: "8px 0", borderBottom: "1px solid #2a2a2a" }}>
+          <div key={k.id} style={{ ...s.row, padding: "8px 0", borderBottom: "1px solid #e5e7eb" }}>
             <div><b>{k.nombre}</b><div style={s.muted}>{clientes.filter((c) => c.categoriaId === k.id).length} cliente(s)</div></div>
             {user.isAdmin && <button style={s.btn("danger")} onClick={() => setConfirm(k)}>Eliminar</button>}
           </div>

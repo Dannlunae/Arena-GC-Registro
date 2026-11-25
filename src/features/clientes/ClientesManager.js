@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { Avatar, Modal, ConfirmModal } from "../common/Common";
 import { norm, porNombre, normalizarCliente, validarCliente, nom } from "../../services/normalizers";
 import { subirArchivo, borrarArchivo, urlArchivo } from "../../services/files";
+import { FOTOS_ACTIVAS } from "../../constants";
 
 const VACIO = { nombres: "", apellidos: "", dni: "", apodo: "", categoriaId: "" };
 
@@ -10,7 +11,7 @@ export function PhotoViewer({ s, localId, c, onClose }) {
   useEffect(() => { urlArchivo(localId, c.id).then(setUrl).catch(() => setErr("No se pudo cargar el archivo")); }, [localId, c.id]);
   return (
     <Modal s={s} onClose={onClose} title={nom(c)}>
-      {err && <div style={{ color: "#e74c3c" }}>{err}</div>}
+      {err && <div style={{ color: "#b91c1c" }}>{err}</div>}
       {!url && !err && <div style={s.muted}>Cargando…</div>}
       {url && (c.foto === "pdf"
         ? <a href={url} target="_blank" rel="noopener noreferrer" style={{ ...s.btn(), textDecoration: "none", display: "inline-block" }}>Abrir PDF</a>
@@ -20,7 +21,7 @@ export function PhotoViewer({ s, localId, c, onClose }) {
   );
 }
 
-export default function ClientesManager({ data, user, s, Y, showToast, nuevoPre, onNuevoConsumido, onVer }) {
+export default function ClientesManager({ data, user, s, showToast, nuevoPre, onNuevoConsumido, onVer }) {
   const { clientes, categorias, fs, localId } = data;
   const [q, setQ] = useState("");
   const [form, setForm] = useState(null); // null = cerrado · {id?, ...campos}
@@ -79,11 +80,11 @@ export default function ClientesManager({ data, user, s, Y, showToast, nuevoPre,
       </div>
       <div style={s.card}>
         {lista.map((c) => (
-          <div key={c.id} style={{ ...s.row, flexWrap: "nowrap", padding: "8px 0", borderBottom: "1px solid #2a2a2a" }}>
-            <Avatar c={c} Y={Y} onClick={() => onVer(c)} />
+          <div key={c.id} style={{ ...s.row, flexWrap: "nowrap", padding: "8px 0", borderBottom: "1px solid #e5e7eb" }}>
+            <Avatar c={c} onClick={() => onVer(c)} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 800 }}>{c.nombres} {c.apellidos} {c.apodo && <span style={s.muted}>«{c.apodo}»</span>}</div>
-              <div style={s.muted}>{c.dni ? `DNI ${c.dni}` : "sin DNI"} {catName(c.categoriaId) && <span style={s.tag("#2a2a2a", "#aaa")}>{catName(c.categoriaId)}</span>}</div>
+              <div style={s.muted}>{c.dni ? `DNI ${c.dni}` : "sin DNI"} {catName(c.categoriaId) && <span style={s.tag("#f3f4f6", "#6b7280")}>{catName(c.categoriaId)}</span>}</div>
             </div>
             <button style={s.btn("secondary")} onClick={() => abrir(c)}>Editar</button>
           </div>
@@ -102,9 +103,13 @@ export default function ClientesManager({ data, user, s, Y, showToast, nuevoPre,
               <option value="">Sin categoría</option>
               {categorias.map((k) => <option key={k.id} value={k.id}>{k.nombre}</option>)}
             </select>
-            <div style={s.muted}>Foto (JPG) o PDF, opcional · máx. 8 MB</div>
+            {FOTOS_ACTIVAS ? (
+              <>
+              <div style={s.muted}>Foto (JPG) o PDF, opcional · máx. 8 MB</div>
             <input style={s.input} type="file" accept="image/jpeg,application/pdf" onChange={(e) => setFile(e.target.files[0] || null)} />
             {form.id && form.foto && <label style={s.muted}><input type="checkbox" checked={quitar} onChange={(e) => setQuitar(e.target.checked)} /> Quitar la foto/PDF actual</label>}
+              </>
+            ) : <div style={s.muted}>La foto y el PDF del cliente se activarán más adelante.</div>}
           </div>
           <div style={{ ...s.row, justifyContent: "flex-end", marginTop: 14 }}>
             {form.id && user.isAdmin && <button style={s.btn("danger")} onClick={() => setConfirm(`¿Eliminar a ${nom(form)}? Sus ingresos pasados se conservan en el registro.`)}>Eliminar</button>}

@@ -20,7 +20,7 @@ Este proyecto es **independiente del ERP**: tiene su propio repositorio, sus pro
 1. *Agregar proyecto* (ej. `registro-cyber`) y pásalo a **Blaze** con tu cuenta de facturación (es necesario para Storage; esto se activa por proyecto). En Google Cloud → Facturación → *Presupuestos y alertas* crea una alerta (ej. US$ 5).
 2. **Authentication → Método de acceso → activa «Anónimo».** Es obligatorio: sin esto la página no puede leer ni guardar nada. (En tu ERP ya lo tienes activado, pero en un proyecto nuevo hay que activarlo.)
 3. **Firestore Database → Crear base de datos** (modo producción; región `southamerica-east1`, que no se puede cambiar después). Luego en *Reglas* pega el contenido de `firestore.rules` y publica.
-4. **Storage → Comenzar** (misma región). Luego en *Reglas* pega `storage.rules` y publica.
+4. **Storage (puede hacerse más adelante):** requiere Blaze. Mientras no lo actives, deja `FOTOS_ACTIVAS = false` en `src/constants.js` y todo lo demás funciona sin fotos. Cuando lo actives: *Storage → Comenzar* (misma región) → *Reglas* → pega `storage.rules` y publica; luego cambia `FOTOS_ACTIVAS` a `true` y sube el cambio a GitHub (Vercel vuelve a publicar solo).
 5. **Configuración del proyecto → Tus apps → Web (`</>`)** → copia los 6 valores de `firebaseConfig`.
 
 **2. Repositorio de GitHub nuevo**

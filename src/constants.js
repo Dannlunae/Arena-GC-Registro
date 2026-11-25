@@ -6,9 +6,11 @@ export const LOCALES = [{ id: "principal", nombre: "Cyber" }];
 // luego cámbialo a true y vuelve a publicar.
 export const FOTOS_ACTIVAS = true;
 
+export const NEGOCIO = "Arena Gaming Center";
+
 export const ROLE_INFO = {
-  admin: { label: "Administrador", color: "#FFD700" },
-  recepcion: { label: "Recepción", color: "#3498db" },
+  admin: { label: "Administrador" },
+  recepcion: { label: "Recepción" },
 };
 
 // Personal por defecto (primer arranque). El primer PIN lo define quien entre primero a cada usuario.

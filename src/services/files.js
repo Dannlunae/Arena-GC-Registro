@@ -1,5 +1,5 @@
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { storage, authReady } from "../firebase";
+import { getStorageSvc, authReady } from "../firebase";
 
 const MAX = 8 * 1024 * 1024;
 const path = (localId, id) => `cyber/${localId}/clientes/${id}`;
@@ -24,8 +24,9 @@ export async function subirArchivo(localId, id, file) {
   const blob = jpg ? await shrink(file) : file;
   if (blob.size > MAX) throw new Error("El archivo debe pesar menos de 8 MB");
   await authReady;
-  await uploadBytes(ref(storage, path(localId, id)), blob, { contentType: jpg ? "image/jpeg" : "application/pdf" });
+  try { await uploadBytes(ref(getStorageSvc(), path(localId, id)), blob, { contentType: jpg ? "image/jpeg" : "application/pdf" }); }
+  catch (e) { throw new Error("No se pudo subir: revisa que Storage esté activado (plan Blaze) y con sus reglas."); }
   return jpg ? "jpg" : "pdf";
 }
-export const urlArchivo = async (localId, id) => { await authReady; return getDownloadURL(ref(storage, path(localId, id))); };
-export const borrarArchivo = async (localId, id) => { await authReady; return deleteObject(ref(storage, path(localId, id))).catch(() => {}); };
+export const urlArchivo = async (localId, id) => { await authReady; return getDownloadURL(ref(getStorageSvc(), path(localId, id))); };
+export const borrarArchivo = async (localId, id) => { await authReady; return deleteObject(ref(getStorageSvc(), path(localId, id))).catch(() => {}); };

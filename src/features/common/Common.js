@@ -1,12 +1,10 @@
 import { useState } from "react";
 
-export function Avatar({ c, onClick, Y }) {
-  const colors = ["#2563eb", "#7c3aed", "#db2777", "#ea580c", "#059669", "#0891b2", "#ca8a04"];
-  const h = [...String(c.id)].reduce((a, ch) => a + ch.charCodeAt(0), 0) % 7;
+export function Avatar({ c, onClick }) {
   const ini = (Array.from(c.nombres || "?")[0] || "?").toUpperCase();
   return (
     <div onClick={c.foto ? onClick : undefined} title={c.foto ? "Ver foto/PDF" : ""}
-      style={{ width: 44, height: 44, borderRadius: "50%", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: colors[h], color: "#fff", fontWeight: 900, fontSize: 18, cursor: c.foto ? "pointer" : "default", outline: c.foto ? `2px solid ${Y}` : "none", outlineOffset: 2 }}>
+      style={{ width: 44, height: 44, borderRadius: "50%", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "#e5e7eb", color: "#374151", fontWeight: 700, fontSize: 17, cursor: c.foto ? "pointer" : "default", outline: c.foto ? "2px solid #111827" : "none", outlineOffset: 2 }}>
       {ini}
     </div>
   );

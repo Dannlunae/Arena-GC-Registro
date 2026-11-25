@@ -3,7 +3,7 @@ import { PromptModal } from "../common/Common";
 import { norm, limaStamp } from "../../services/normalizers";
 import { downloadCsv } from "../../services/downloads";
 
-export default function RegistrosPanel({ data, s, Y, showToast }) {
+export default function RegistrosPanel({ data, s, showToast }) {
   const { fs, hoy, ingresosHoy, resumenHoy } = data;
   const [dia, setDia] = useState(hoy);
   const [dniQ, setDniQ] = useState("");
@@ -70,18 +70,18 @@ export default function RegistrosPanel({ data, s, Y, showToast }) {
       </div>
       <div style={{ ...s.card, overflowX: "auto" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-          <thead><tr style={{ color: "#777", textAlign: "left" }}>
+          <thead><tr style={{ color: "#6b7280", textAlign: "left" }}>
             {["Fecha", "Hora", "DNI", "Nombres", "Apodo", "Comentario", "Registró", ""].map((h) => <th key={h} style={{ padding: "6px 8px", whiteSpace: "nowrap" }}>{h}</th>)}
           </tr></thead>
           <tbody>
             {filas.map((e) => {
               const t = limaStamp(e.tsMs);
               return (
-                <tr key={e.id} style={{ borderTop: "1px solid #2a2a2a", verticalAlign: "top" }}>
+                <tr key={e.id} style={{ borderTop: "1px solid #e5e7eb", verticalAlign: "top" }}>
                   <td style={{ padding: "6px 8px", whiteSpace: "nowrap" }}>{t.slice(0, 10)}</td>
                   <td style={{ padding: "6px 8px", whiteSpace: "nowrap" }}>{t.slice(11)}</td>
                   <td style={{ padding: "6px 8px" }}>{e.dni || "—"}</td>
-                  <td style={{ padding: "6px 8px" }}>{e.nombres} {e.n > 1 && <span style={s.tag("#4a3b00", Y)}>Repetido · n.º {e.n} del día</span>}</td>
+                  <td style={{ padding: "6px 8px" }}>{e.nombres} {e.n > 1 && <span style={s.tag("#111827", "#ffffff")}>Repetido · n.º {e.n} del día</span>}</td>
                   <td style={{ padding: "6px 8px" }}>{e.apodo || "—"}</td>
                   <td style={{ padding: "6px 8px" }}>{e.comentario}</td>
                   <td style={{ padding: "6px 8px" }}>{e.usuario || "—"}</td>

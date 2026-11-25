@@ -5,7 +5,7 @@ import { clean } from "../../services/normalizers";
 
 // Gestión del personal (solo admin): nombres, roles y restablecer PIN. El PIN nunca se muestra:
 // al restablecerlo, el usuario define uno nuevo la próxima vez que entre.
-export default function StaffManager({ data, user, s, Y, showToast }) {
+export default function StaffManager({ data, user, s, showToast }) {
   const { fs } = data;
   const [staff, setStaff] = useState(null);
   const [prompt, setPrompt] = useState(null);
@@ -37,7 +37,7 @@ export default function StaffManager({ data, user, s, Y, showToast }) {
           <div key={u.id} style={s.card}>
             <div style={s.row}>
               <div><b>{u.name}</b> {yo && <span style={s.muted}>(tú)</span>}
-                <div>{u.roles.map((r) => <span key={r} style={s.tag(`${(ROLE_INFO[r] || {}).color || Y}33`, (ROLE_INFO[r] || {}).color || Y)}>{(ROLE_INFO[r] || {}).label || r}</span>)} <span style={s.muted}>{u.pinHash ? "PIN definido" : "sin PIN"}</span></div>
+                <div>{u.roles.map((r) => <span key={r} style={s.tag("#f3f4f6", "#374151")}>{(ROLE_INFO[r] || {}).label || r}</span>)} <span style={s.muted}>{u.pinHash ? "PIN definido" : "sin PIN"}</span></div>
               </div>
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                 <button style={s.btn("secondary")} onClick={() => setPrompt({ title: "Nuevo nombre", initial: u.name, save: (v) => { const n = clean(v).slice(0, 40); if (n) mutar((l) => l.map((x) => (x.id === u.id ? { ...x, name: n } : x)), "Nombre guardado"); } })}>Renombrar</button>

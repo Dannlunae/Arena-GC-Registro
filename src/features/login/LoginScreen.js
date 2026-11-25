@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { FS } from "../../services/cyberFS";
 import { hashPin } from "../../services/normalizers";
-import { LOCALES, ROLE_INFO, DEFAULT_STAFF } from "../../constants";
+import { LOCALES, ROLE_INFO, DEFAULT_STAFF, NEGOCIO } from "../../constants";
 
 // Mismo flujo que el login del ERP: (local →) usuario → PIN. Si el usuario aún no tiene PIN,
 // el primero que entre lo define (se pide dos veces).
-export default function LoginScreen({ onLogin, s, Y, isMobile }) {
+export default function LoginScreen({ onLogin, s, isMobile }) {
   const [step, setStep] = useState(LOCALES.length > 1 ? "local" : "user");
   const [local, setLocal] = useState(LOCALES[0].id);
   const [staff, setStaff] = useState([]);
@@ -76,12 +76,16 @@ export default function LoginScreen({ onLogin, s, Y, isMobile }) {
   const titulo = { pin: "Ingresa tu PIN", newpin: "Crea tu PIN (4 a 6 números)", confirm: "Repite tu PIN" }[step];
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, background: "#0f0f0f" }}>
-      <div style={{ ...s.card, width: "100%", maxWidth: 380, padding: 22 }}>
-        <div style={{ ...s.title, fontSize: 28, textAlign: "center" }}>REGISTRO DE INGRESOS</div>
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 16, background: "#f0f2f5" }}>
+      <div style={{ width: "100%", maxWidth: 380 }}>
+        <div style={{ textAlign: "center", marginBottom: 22 }}>
+          <div style={{ fontSize: 24, fontWeight: 700, letterSpacing: -0.5, lineHeight: 1 }}>Registro de ingresos</div>
+          <div style={{ fontSize: 11, color: "#9ca3af", letterSpacing: 1.5, marginTop: 6 }}>{NEGOCIO.toUpperCase()}</div>
+        </div>
+        <div style={{ ...s.card, padding: 24, borderRadius: 16, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
 
         {step === "local" && LOCALES.map((l) => (
-          <button key={l.id} style={{ ...cardBtn, marginBottom: 8 }} onClick={async () => { setLocal(l.id); await loadStaff(l.id); setStep("user"); }}>🏪 {l.nombre}</button>
+          <button key={l.id} style={{ ...cardBtn, marginBottom: 8 }} onClick={async () => { setLocal(l.id); await loadStaff(l.id); setStep("user"); }}>{l.nombre}</button>
         ))}
 
         {step === "user" && (
@@ -90,7 +94,7 @@ export default function LoginScreen({ onLogin, s, Y, isMobile }) {
             {loading && <div style={{ ...s.muted, textAlign: "center" }}>Cargando…</div>}
             {staff.map((u) => (
               <button key={u.id} style={{ ...cardBtn, marginBottom: 8 }} onClick={() => { setUser(u); setPin(""); setFirst(""); setError(""); setStep(u.pinHash ? "pin" : "newpin"); }}>
-                <span style={{ width: 34, height: 34, borderRadius: "50%", background: (ROLE_INFO[u.roles[0]] || {}).color || Y, color: "#111", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900 }}>{u.name[0]}</span>
+                <span style={{ width: 34, height: 34, borderRadius: "50%", background: "#111827", color: "#ffffff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900 }}>{u.name[0]}</span>
                 <span>{u.name}<br /><span style={s.muted}>{(ROLE_INFO[u.roles[0]] || {}).label}{u.pinHash ? "" : " · sin PIN"}</span></span>
               </button>
             ))}
@@ -103,7 +107,7 @@ export default function LoginScreen({ onLogin, s, Y, isMobile }) {
             <div style={{ textAlign: "center", fontWeight: 800 }}>{user.name}</div>
             <div style={{ ...s.muted, textAlign: "center", marginBottom: 12 }}>{titulo}</div>
             <div style={{ display: "flex", justifyContent: "center", gap: 10, marginBottom: 14 }}>
-              {[0, 1, 2, 3, 4, 5].map((i) => <div key={i} style={{ width: 14, height: 14, borderRadius: "50%", background: i < pin.length ? Y : "#333" }} />)}
+              {[0, 1, 2, 3, 4, 5].map((i) => <div key={i} style={{ width: 14, height: 14, borderRadius: "50%", background: i < pin.length ? "#111827" : "#e5e7eb" }} />)}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 8 }}>
               {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((d) => <button key={d} style={{ ...s.btn("secondary"), fontSize: 20, padding: 14 }} onClick={() => digit(d)}>{d}</button>)}
@@ -114,7 +118,8 @@ export default function LoginScreen({ onLogin, s, Y, isMobile }) {
             <button style={{ ...s.btn(), width: "100%", marginTop: 10, padding: 14, fontSize: 15, opacity: pin.length < 4 || busy ? 0.5 : 1 }} onClick={submit}>{step === "newpin" ? "Continuar" : "Entrar"}</button>
           </>
         )}
-        {error && <div style={{ color: "#e74c3c", textAlign: "center", marginTop: 12, fontSize: 13, fontWeight: 700 }}>{error}</div>}
+        {error && <div style={{ color: "#b91c1c", textAlign: "center", marginTop: 12, fontSize: 13, fontWeight: 700 }}>{error}</div>}
+        </div>
       </div>
     </div>
   );

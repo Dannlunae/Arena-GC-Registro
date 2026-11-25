@@ -14,7 +14,8 @@ const FIREBASE_CONFIG = {
 
 const app = getApps().length ? getApps()[0] : initializeApp(FIREBASE_CONFIG);
 export const db = getFirestore(app);
-export const storage = getStorage(app);
+// Storage se inicia solo cuando se usa: así la app funciona aunque Storage aún no esté activado.
+export const getStorageSvc = () => getStorage(app);
 const auth = getAuth(app);
 
 // Igual que el ERP: sesión anónima en segundo plano (las reglas piden request.auth != null).

@@ -1,4 +1,4 @@
 *{box-sizing:border-box}
-body{margin:0;background:#0f0f0f;color:#eee;font-family:'Nunito',sans-serif}
+body{margin:0;background:#f0f2f5;color:#111827;font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif}
 button,input,select{font-family:inherit}
-::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#333;border-radius:4px}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:4px}
